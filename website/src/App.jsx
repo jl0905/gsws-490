@@ -15,12 +15,26 @@ const containerStyle = {
   boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
 };
 
-// Sample restroom locations (replace with actual data)
+// Restroom locations on William & Mary campus
 const restroomLocations = [
-  { id: 1, name: 'Swem Library', position: { lat: 37.2688, lng: -76.7149 } },
-  { id: 2, name: 'Sadler Center', position: { lat: 37.2682, lng: -76.7135 } },
-  { id: 3, name: 'Tucker Hall', position: { lat: 37.2715, lng: -76.7118 } },
-  { id: 4, name: 'ISC', position: { lat: 37.2675, lng: -76.7167 } },
+  { id: 1, name: 'Wren Building', position: { lat: 37.270805, lng: -76.708948 } },
+  { id: 2, name: 'Swem Library', position: { lat: 37.269609, lng: -76.716252 } },
+  { id: 3, name: 'Zable Stadium (West Stadium)', position: { lat: 37.272906, lng: -76.714939 } },
+  { id: 4, name: 'Miller - School of Business', position: { lat: 37.2662, lng: -76.7181 } },
+  { id: 5, name: 'School of Law', position: { lat: 37.2653, lng: -76.7050 } },
+  { id: 6, name: 'School of Education', position: { lat: 37.2780, lng: -76.7236 } },
+  { id: 7, name: 'Ewell Hall', position: { lat: 37.2703, lng: -76.7100 } },
+  { id: 8, name: 'Tucker Hall', position: { lat: 37.2714, lng: -76.7100 } },
+  { id: 9, name: 'Integrated Science Center (ISC)', position: { lat: 37.269348, lng: -76.714490 } },
+  { id: 10, name: 'Small Hall', position: { lat: 37.268835, lng: -76.717067 } },
+  { id: 11, name: 'Boswell Hall', position: { lat: 37.267327, lng: -76.716717 } },
+  { id: 12, name: 'Chancellors Hall', position: { lat: 37.271432, lng: -76.710787 } },
+  { id: 13, name: 'Blow Hall', position: { lat: 37.272056, lng: -76.711287 } },
+  { id: 14, name: 'Undergraduate Admission', position: { lat: 37.269545, lng: -76.709114 } },
+  { id: 15, name: 'Reves Center', position: { lat: 37.2719, lng: -76.7088 } },
+  { id: 16, name: 'Sadler Center', position: { lat: 37.271620, lng: -76.714146 } },
+  { id: 17, name: 'Rec Center', position: { lat: 37.274314, lng: -76.720905 } },
+  { id: 18, name: 'Daily Grind', position: { lat: 37.271114, lng: -76.714126 } }
 ];
 
 function App() {
@@ -35,6 +49,11 @@ function App() {
   const handleMarkerClick = (location) => {
     setSelectedLocation(location);
   };
+
+  // Debug logs
+  console.log('Rendering map with locations:', restroomLocations);
+  console.log('Google Maps API Key exists:', !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+  console.log('Is map loaded?', isMapLoaded);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -59,7 +78,7 @@ function App() {
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={defaultCenter}
-                zoom={16}
+                zoom={15}
                 onClick={handleMapClick}
                 options={{
                   streetViewControl: false,
@@ -75,22 +94,25 @@ function App() {
                   ]
                 }}
               >
-                {isMapLoaded && restroomLocations.map((location) => {
-                  // Create a new Size object only when the map is loaded
-                  const icon = isMapLoaded ? {
-                    url: 'https://maps.google.com/mapfiles/ms/icons/restroom.png',
-                    scaledSize: new window.google.maps.Size(32, 32)
-                  } : null;
-                  
-                  return (
-                    <Marker
-                      key={location.id}
-                      position={location.position}
-                      onClick={() => handleMarkerClick(location)}
-                      icon={icon}
-                    />
-                  );
-                })}
+                {isMapLoaded ? (
+                  restroomLocations.map((location) => {
+                    console.log('Adding marker for:', location.name, 'at', location.position);
+                    return (
+                      <Marker
+                        key={location.id}
+                        position={location.position}
+                        onClick={() => handleMarkerClick(location)}
+                        icon={{
+                          url: 'https://maps.google.com/mapfiles/ms/micons/red-dot.png',
+                          scaledSize: new window.google.maps.Size(32, 32),
+                          anchor: new window.google.maps.Point(16, 16)
+                        }}
+                      />
+                    );
+                  })
+                ) : (
+                  <div>Loading map...</div>
+                )}
               </GoogleMap>
             </LoadScript>
           </div>
@@ -162,11 +184,6 @@ function App() {
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">‌</h3>
               <ul className="mt-4 space-y-2">
                 <li>
-                  <a href="https://my.wm.edu" className="text-base text-gray-100 hover:text-white transition-colors">
-                    myWM Portal
-                  </a>
-                </li>
-                <li>
                   <a href="https://www.wm.edu/offices/psi/thecenter/documents/all-gender-and-single-occupancy-facility-list.pdf" className="text-base text-gray-100 hover:text-white transition-colors">
                     Accessible Restrooms Locations
                   </a>
@@ -174,6 +191,11 @@ function App() {
                 <li>
                   <a href="https://www.wm.edu/offices/studentsuccess/studentaccessibilityservices/" className="text-base text-gray-100 hover:text-white transition-colors">
                     Student Accessibility Services
+                  </a>
+                </li>
+                <li>
+                  <a href="https://my.wm.edu" className="text-base text-gray-100 hover:text-white transition-colors">
+                    myWM Portal
                   </a>
                 </li>
               </ul>
