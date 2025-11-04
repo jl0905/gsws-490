@@ -39,9 +39,9 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-[#115740] shadow-sm">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold text-gray-900">bathroom-finder</h1>
+          <h1 className="text-2xl font-bold text-white">w&m bathroom-finder</h1>
         </div>
       </header>
 
@@ -117,11 +117,11 @@ function App() {
                       navigator.geolocation.getCurrentPosition((position) => {
                         const { latitude, longitude } = position.coords;
                         console.log('Current location:', { lat: latitude, lng: longitude });
-                        // You can add logic to find nearest restrooms here
+                        // You can add logic to #866F45 nearest restrooms here
                       });
                     }
                   }}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                  className="bg-[#866F45] hover:bg-[#9a7f4f] text-white font-medium py-2 px-4 rounded-md transition-colors"
                 >
                   Find Restrooms Near Me
                 </button>
@@ -132,11 +132,67 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white mt-8 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto py-6 px-4 overflow-hidden sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Bathroom Finder. All rights reserved.
-          </p>
+      <footer className="bg-[#115740] text-white mt-12">
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Gender, Sexuality & Women's Studies */}
+            <div>
+              <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Resources</h3>
+              <ul className="mt-4 space-y-2">
+                <li>
+                  <a href="https://www.wm.edu/as/gsws/" className="text-base text-gray-100 hover:text-white transition-colors">
+                    GSWS Department
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.wm.edu/as/gsws/undergraduateprogram/" className="text-base text-gray-100 hover:text-white transition-colors">
+                    Majors & Minors
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.wm.edu/admission/undergraduateadmission/how-to-apply/" className="text-base text-gray-100 hover:text-white transition-colors">
+                    Apply to W&M
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
+            {/* W&M Resources */}
+            <div>
+              <h3 className="text-sm font-semibold text-white tracking-wider uppercase">‌</h3>
+              <ul className="mt-4 space-y-2">
+                <li>
+                  <a href="https://my.wm.edu" className="text-base text-gray-100 hover:text-white transition-colors">
+                    myWM Portal
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.wm.edu/offices/psi/thecenter/documents/all-gender-and-single-occupancy-facility-list.pdf" className="text-base text-gray-100 hover:text-white transition-colors">
+                    Accessible Restrooms Locations
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.wm.edu/offices/studentsuccess/studentaccessibilityservices/" className="text-base text-gray-100 hover:text-white transition-colors">
+                    Student Accessibility Services
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
+            {/* About This Project */}
+            <div>
+              <h3 className="text-sm font-semibold text-white tracking-wider uppercase">About This Project</h3>
+              <p className="mt-4 text-base text-gray-100">
+                Created for GSWS 490 to help locate gender-neutral and accessible restrooms on W&M's campus.
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-8 pt-8 border-t border-gray-200">
+            <p className="text-center text-sm text-gray-200">
+              This is an open-source project. Find the code on <a href="https://github.com/jl0905/gsws-490" className="text-white font-medium hover:underline">GitHub</a>.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
