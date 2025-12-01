@@ -1,3 +1,3 @@
-A project for GSWS 490, in particular a response for our second performance draft/vlog.
+Final project/performance for GSWS 490
 
-The website's goal is to find the nearest gender neutral/accessible restrooms and other resoruces on the w&m campus.
+The website's goal is to find the nearest gender neutral/accessible restrooms on campus and also have website design that emphasizes the challenges of having good accessibility for people who need it 
