@@ -216,11 +216,11 @@ function App() {
                 The website's goal is to find the nearest gender neutral/accessible restrooms on the w&m campus.
               </p>
               {selectedLocation ? (
-                <div className="mt-4 p-4 bg-blue-50 rounded-md border border-blue-100">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-2">{selectedLocation.name}</h3>
+                <div className="mt-4 p-4 rounded-md border border-blue-100 bg-[#866F45] hover:bg-[#9a7f4f]">
+                  <h3 className="text-lg font-semibold text-white mb-2">{selectedLocation.name}</h3>
                   <div className="space-y-2">
                     {selectedLocation.description.split('\n').map((paragraph, i) => (
-                      <p key={i} className="text-sm text-gray-700">
+                      <p key={i} className="text-sm text-gray-50">
                         {paragraph}
                       </p>
                     ))}
