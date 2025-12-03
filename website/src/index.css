@@ -1,6 +1,12 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --color-wm-green: #115740;
+  --color-wm-gold: #FFD700;
+  --color-wm-green-dark: #0d4530;
+  --color-wm-gold-dark: #FFC700;
+  
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   /* line-height: 1.5;
   font-weight: 400; */
