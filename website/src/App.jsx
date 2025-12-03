@@ -1,5 +1,7 @@
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import VideoPage from './VideoPage';
 
 // Default center on William & Mary campus
 const defaultCenter = {
@@ -104,7 +106,7 @@ const restroomLocations = [
   { 
     id: 15, 
     name: 'Reves Center', 
-    position: { lat: 37.2719, lng: -76.7088 },
+    position: { lat: 37.269790, lng: -76.707578 },
     description: '2 Restrooms. Both restrooms are on the 1st floor, near the Jamestown Road entrance. Each restroom has two entrance doors and is wheelchair accessible.'
   },
   { 
@@ -127,9 +129,35 @@ const restroomLocations = [
   }
 ];
 
-function App() {
+function AppContent() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [doorClicks, setDoorClicks] = useState(0);
+  const [requiredClicks, setRequiredClicks] = useState(0);
+  const [isShaking, setIsShaking] = useState(false);
+  const [isGameActive, setIsGameActive] = useState(false);
+  const [mapKey, setMapKey] = useState(0);
+  const navigate = useNavigate();
+
+  // Add custom styles for door shaking animation
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes doorShake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(15deg); }
+        75% { transform: rotate(-15deg); }
+      }
+      .door-shake {
+        animation: doorShake 0.5s ease-in-out;
+        display: inline-block;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   const handleMapClick = (e) => {
     // You can add functionality to add new restroom locations here
@@ -140,6 +168,47 @@ function App() {
     setSelectedLocation(location);
   };
 
+  const handleVideoClick = (e) => {
+    e.preventDefault();
+    
+    if (!isGameActive) {
+      // Start the shaking game
+      const clicksNeeded = Math.floor(Math.random() * 5) + 1; // 1-5 clicks
+      setRequiredClicks(clicksNeeded);
+      setDoorClicks(0);
+      setIsGameActive(true);
+      
+      // Trigger shake animation on first click too
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    } else {
+      // Trigger shake animation
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+      
+      // Increment clicks
+      const newClicks = doorClicks + 1;
+      setDoorClicks(newClicks);
+      
+      if (newClicks >= requiredClicks) {
+        // Game complete, navigate to video
+        setIsGameActive(false);
+        setIsShaking(false);
+        navigate('/video');
+      }
+    }
+  };
+
+  // Reset game state when component mounts (when returning from video page)
+  useEffect(() => {
+    setIsShaking(false);
+    setIsGameActive(false);
+    setDoorClicks(0);
+    setRequiredClicks(0);
+    // Refresh map by incrementing key
+    setMapKey(prev => prev + 1);
+  }, []);
+
   // Debug logs
   console.log('Rendering map with locations:', restroomLocations);
   console.log('Google Maps API Key exists:', !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
@@ -149,12 +218,26 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-[#115740] shadow-sm">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold text-white">w&m restroom-finder</h1>
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center relative">
+          <Link to="/" className="text-2xl font-bold text-white hover:text-gray-200 transition-colors">w&m restroom-finder</Link>
+          <div className="relative">
+            <Link 
+              to="/video"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+              onClick={handleVideoClick}
+            >
+              Video <span className={isShaking ? 'door-shake' : ''}>🚪</span>
+            </Link>
+            {isGameActive && (
+              <div className="absolute top-full mt-2 right-0 bg-white text-gray-800 px-3 py-1 rounded-md shadow-lg text-sm whitespace-nowrap">
+                Click the door {requiredClicks - doorClicks} more time{requiredClicks - doorClicks !== 1 ? 's' : ''}!
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
+            {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           {/* Map Container */}
@@ -166,6 +249,7 @@ function App() {
               loadingElement={<div className="w-full h-96 flex items-center justify-center">Loading map...</div>}
             >
               <GoogleMap
+                key={mapKey}
                 mapContainerStyle={containerStyle}
                 center={defaultCenter}
                 zoom={15}
@@ -216,17 +300,17 @@ function App() {
                 The website's goal is to find the nearest gender neutral/accessible restrooms on the w&m campus.
               </p>
               {selectedLocation ? (
-                <div className="mt-4 p-4 rounded-md border border-blue-100 bg-[#866F45] hover:bg-[#9a7f4f]">
-                  <h3 className="text-lg font-semibold text-white mb-2">{selectedLocation.name}</h3>
+                <div className="mt-4 p-4 rounded-md border border-blue-100 bg-amber-100 hover:bg-amber-200 text-gray-800">
+                  <h3 className="text-lg font-semibold text-[#115740] mb-2">{selectedLocation.name}</h3>
                   <div className="space-y-2">
                     {selectedLocation.description.split('\n').map((paragraph, i) => (
-                      <p key={i} className="text-sm text-gray-50">
+                      <p key={i} className="text-sm">
                         {paragraph}
                       </p>
                     ))}
                   </div>
                   {selectedLocation.id === 11 && (
-                    <div className="mt-3 p-2 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
+                    <div className="mt-3 p-2 bg-amber-50 border-l-4 border-amber-300 text-amber-800">
                       <p className="text-sm">Note: Some restrooms may have restricted access.</p>
                     </div>
                   )}
@@ -236,32 +320,25 @@ function App() {
                   <p className="text-gray-500">Click on a location marker to see restroom details</p>
                 </div>
               )}
-              <div className="mt-4">
-                <button 
-                  onClick={() => {
-                    if (navigator.geolocation) {
-                      navigator.geolocation.getCurrentPosition((position) => {
-                        const { latitude, longitude } = position.coords;
-                        console.log('Current location:', { lat: latitude, lng: longitude });
-                        // You can add logic to #866F45 nearest restrooms here
-                      });
-                    }
-                  }}
-                  className="bg-[#866F45] hover:bg-[#9a7f4f] text-white font-medium py-2 px-4 rounded-md transition-colors"
-                >
-                  Find Restrooms Near Me
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </main>
 
+      {/* Accessible Restrooms Counter */}
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white overflow-hidden shadow rounded-lg p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Accessible Restrooms on Campus</h2>
+          <div className="text-6xl font-bold text-[#115740] mb-2">12/50</div>
+          <p className="text-gray-600">Gender-neutral and accessible restrooms available</p>
+        </div>
+      </div>
+
       {/* Footer */}
       <footer className="bg-[#115740] text-white mt-12">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Gender, Sexuality & Women's Studies */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* W&M Resources */}
             <div>
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Resources</h3>
               <ul className="mt-4 space-y-2">
@@ -283,7 +360,7 @@ function App() {
               </ul>
             </div>
             
-            {/* W&M Resources */}
+            {/* W&M Resources continued */}
             <div>
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">‌</h3>
               <ul className="mt-4 space-y-2">
@@ -304,6 +381,8 @@ function App() {
                 </li>
               </ul>
             </div>
+
+            <div></div>
             
             {/* About This Project */}
             <div>
@@ -315,14 +394,22 @@ function App() {
           </div>
           
           <div className="mt-8 pt-8 border-t border-gray-200">
-            <p className="text-center text-sm text-gray-200">
-              This is an open-source project. Find the code on <a href="https://github.com/jl0905/gsws-490" className="text-white font-medium hover:underline">GitHub</a>.
-            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/video" element={<VideoPage />} />
+        <Route path="/" element={<AppContent />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
