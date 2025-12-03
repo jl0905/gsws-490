@@ -182,33 +182,43 @@ function AppContent() {
   };
   // ----------------------------------------------------
 
-  // Add custom styles for door shaking animation
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes doorShake {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(15deg); }
-        75% { transform: rotate(-15deg); }
-      }
-      .door-shake {
-        animation: doorShake 0.5s ease-in-out;
-        display: inline-block;
-      }
-      .map-loading-placeholder {
-          /* Add dark mode styles for the loading div */
-          background-color: ${isDarkMode ? '#1f2937' : '#f9fafb'};
-          color: ${isDarkMode ? '#f9fafb' : '#1f2937'};
-          display: flex;
-          align-items: center;
-          justify-content: center;
+  // Add custom styles for door shaking animation (mount once)
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes doorShake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(15deg); }
+        75% { transform: rotate(-15deg); }
       }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, [isDarkMode]); // Re-run effect when dark mode changes to update placeholder style
+      .door-shake {
+        animation: doorShake 0.5s ease-in-out;
+        display: inline-block;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  // Add custom styles for the map loading placeholder (depends on dark mode)
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .map-loading-placeholder {
+        background-color: ${isDarkMode ? '#1f2937' : '#f9fafb'};
+        color: ${isDarkMode ? '#f9fafb' : '#1f2937'};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [isDarkMode]); // Re-run effect when dark mode changes to update placeholder style
 
   const handleMapClick = (e) => {
     // You can add functionality to add new restroom locations here
@@ -316,14 +326,45 @@ function AppContent() {
       {/* 1. Apply primary dark mode styles to the main container */}
       {/* Header */}
       {/* 2. Apply dark mode styles to the header */}
-      <header className="bg-[#115740] shadow-sm dark:bg-gray-800 transition-colors duration-500">
+      <header className="bg-[#115740] shadow-sm  transition-colors duration-500">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center relative">
           <Link to="/" className="text-2xl font-bold text-white hover:text-gray-200 transition-colors">w&m restroom-finder</Link>
           
-          {/* Toggle and Video Link Container */}
+          {/* Navigation Links */}
           <div className="flex items-center space-x-4 relative">
             
-            {/* 3. Dark Mode Toggle Button */}
+            {/* Map Button */}
+            <Link 
+              to="/"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+            >
+              Map
+            </Link>
+            
+
+
+            <Link 
+              to="/video"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+              onClick={handleVideoClick}
+            >
+              Video<span className={isShaking ? 'door-shake' : ''}>🚪</span>
+            </Link>
+            
+            <Link 
+              to="/game"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+            >
+              Game
+            </Link>
+            {isGameActive && (
+              <div className="absolute top-full mt-2 right-0 bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-100 px-3 py-1 rounded-md shadow-lg text-sm whitespace-nowrap z-10">
+                {/* 4. Apply dark mode styles to the game popup */}
+                Click the door {requiredClicks - doorClicks} more time{requiredClicks - doorClicks !== 1 ? 's' : ''}!
+              </div>
+            )}
+
+            {/* Dark Mode Toggle Button */}
             <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-full text-white hover:bg-white/10 transition-colors"
@@ -337,27 +378,6 @@ function AppContent() {
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                 )}
             </button>
-
-            <Link 
-              to="/video"
-              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
-              onClick={handleVideoClick}
-            >
-              Video <span className={isShaking ? 'door-shake' : ''}>🚪</span>
-            </Link>
-            
-            <Link 
-              to="/game"
-              className="text-wm-gold hover:text-yellow-300 transition-colors text-lg font-medium"
-            >
-              🎮 Game
-            </Link>
-            {isGameActive && (
-              <div className="absolute top-full mt-2 right-0 bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-100 px-3 py-1 rounded-md shadow-lg text-sm whitespace-nowrap z-10">
-                {/* 4. Apply dark mode styles to the game popup */}
-                Click the door {requiredClicks - doorClicks} more time{requiredClicks - doorClicks !== 1 ? 's' : ''}!
-              </div>
-            )}
           </div>
           </div>
       </header>
@@ -457,8 +477,7 @@ function AppContent() {
       </div>
 
       {/* Footer */}
-      {/* 10. Apply dark mode styles to the footer */}
-      <footer className="bg-[#115740] dark:bg-gray-950 text-white mt-12 transition-colors">
+      <footer className="bg-[#115740]  text-white mt-12 transition-colors">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* W&M Resources */}
@@ -511,7 +530,7 @@ function AppContent() {
             <div>
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">About This Project</h3>
               <p className="mt-4 text-base text-gray-100">
-                Created for GSWS 490 to help locate gender-neutral and accessible restrooms on W&M's campus.
+                Created for GSWS 490 to help locate and teach about gender-neutral and accessible restrooms on W&M's campus.
               </p>
             </div>
           </div>

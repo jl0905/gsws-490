@@ -1,27 +1,93 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+// Helper function to get the initial theme
+const getInitialTheme = () => {
+    // Check localStorage for saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        return true;
+    }
+    // Check system preference if no saved theme
+    if (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return true;
+    }
+    return false;
+};
 
 const VideoPage = () => {
+  // Dark Mode State
+  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme);
+
+  // Dark mode logic
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isDarkMode) {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  };
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500">
       {/* Header - Same as main page */}
-      <header className="bg-[#115740] shadow-sm">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-white hover:text-gray-200 transition-colors">
-            w&m restroom-finder
-          </Link>
-          <Link 
-            to="/" 
-            className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
-          >
-            Back to Map 🧻
-          </Link>
+      <header className="bg-[#115740] shadow-sm transition-colors duration-500">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center relative">
+          <Link to="/" className="text-2xl font-bold text-white hover:text-gray-200 transition-colors">w&m restroom-finder</Link>
+          
+          {/* Navigation Links */}
+          <div className="flex items-center space-x-4 relative">
+            {/* Map Button */}
+            <Link 
+              to="/"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+            >
+              Map
+            </Link>
+
+
+            <Link 
+              to="/video"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+            >
+              Video‌‌🔓
+            </Link>
+            
+            <Link 
+              to="/game"
+              className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+            >
+              Game
+            </Link>
+
+            {/* Dark Mode Toggle Button */}
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-full text-white hover:bg-white/10 transition-colors"
+              aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {isDarkMode ? (
+                // Sun icon for light mode (currently dark)
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              ) : (
+                // Moon icon for dark mode (currently light)
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Video Container */}
       <main className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white overflow-hidden shadow rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Project Video</h1>
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg p-6 transition-colors duration-500">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Project Video</h1>
           <div className="aspect-w-16 aspect-h-9">
             <iframe 
               className="w-full h-[500px]" 
@@ -36,7 +102,7 @@ const VideoPage = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#115740] text-white mt-12">
+      <footer className="bg-[#115740] text-white mt-12 transition-colors">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* W&M Resources */}
@@ -89,12 +155,12 @@ const VideoPage = () => {
             <div>
               <h3 className="text-sm font-semibold text-white tracking-wider uppercase">About This Project</h3>
               <p className="mt-4 text-base text-gray-100">
-                Created for GSWS 490 to help locate gender-neutral and accessible restrooms on W&M's campus.
+                Created for GSWS 490 to help locate and teach about gender-neutral and accessible restrooms on W&M's campus.
               </p>
             </div>
           </div>
           
-          <div className="mt-8 pt-8 border-t border-gray-200">
+          <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
           </div>
         </div>
       </footer>
