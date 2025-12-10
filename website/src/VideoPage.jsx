@@ -103,8 +103,8 @@ const VideoPage = () => {
           setIsShaking(false);
           
           // Navigate to appropriate page based on clicked element
-          if (clickedText.includes('Video')) {
-            navigate('/video');
+          if (clickedText.includes('Game')) {
+            navigate('/game');
           } else if (clickedText.includes('Map')) {
             navigate('/');
           }
