@@ -1,0 +1,27 @@
+
+Creative performance. Create a 4-7 minute performance that draws upon discussions and methods we have explored in class (playwriting, performance art, drag, actions, rituals, immersive theatre etc). Be intentional about what intervention you want to make and how you want to make it.
+-Performances will be presented in class (live or filmed) on an assigned session either 12/1 or 12/3 (20%).
+-A written critical reflection of your performance, its methods and interventions, that draws upon at least 2 class readings and includes other research (minimum 5 total sources). Length: 1,000-1,300 words. Include a bibliography. Due 12/10 5pm (20%).
+
+GSWS reflection 
+
+	Firstly, I was inspired to do my project by our readings for the class period on Monday 11/3. I wanted to make the intervention that 	……………		because of some things like 		……………….			and the artists that I was inspired by were 		….
+
+        I chose to make a website for my final project because I wanted to prioritize accessbility/interactibility and maximize the potential for impact since websites can reach anybody on the internet. In my opinion a website can be a good alternative medium for art/performance, and it can also exist alongside other more "traditional" performances so there can be a larger surface area for people to come across trans performance in general. Another reason for my choice to make a website was so that I could apply my computer science skills to a good project in an interdisciplinary way.
+
+	Issues with equitable bathroom access are ubiquitous and people are prevented from having accessible bathrooms because of their gender, race, sexual orientation, and/or disability. Terry et al. state that "the notion of accessibility is broad, multidimensional, and diffused across several academic disciplines." This multidimensionality is evident when it comes to bathrooms. For example, before the 1960's bathrooms were segregated by race, and only recently have many countries made accomodations when it comes to bathroom accessibility for people with disabilities (for example the UN only convened on rights for the disabled in 2006 [CITE HERE]). Bathrooms in economically underprivileged places are also often fitted with many less amenities than how the ideal bathroom should be. There are inequities even for heterosexual cisgender people which the gender binary bathroom setup are supposed to cater to; for example, there is problematic thinking and differences in accessibility with how, in some setups, changing tables will only be found in the women's bathrooms, or how there are only urinals in the men's bathrooms which impacts ease of use as well. Most in relation to our class, trans people are often harassed by malignant individuals as well as discriminated against by the government and laws when it comes to bathroom access. So all in all, I wanted to make an intervention that would call attention to this issues and how a lot of inequities still persist even on our campus. 
+
+        There are several issues with how the College of William and Mary frames the "accessibility" of bathrooms. One main point is that their use of the word "acessibility" does not distinguish between all-gender restrooms and restrooms that include physical accomodations which engender accessibility. Furthermore, this is tied to a greater problem and trend of the College failing to update information on its digital platforms while new changes are made to restrooms across the campus, whether by the relabelling of old single-gender restrooms, the destruction or construction of new buildings (and the bathrooms within) on campus, or new implements inside of old restrooms which are left unnoticed by platforms that are supposed to compile this important information. This obfuscation of information becomes a headache for trans people as well as the larger community that accessible bathrooms bring utility to. This is especially bad because this shows the inattention of the school to an issue that is..................
+
+        Earlier in the year we did two draft performances, the second of which lead to the draft version of my website. At first it only had the front page, showing a google map component centered on our campus with markers on each building on campus with accessible bathrooms in it and you could click the marker to find out more. For the final presentation I added the video of a walk I took from the School of Law to the undergraduate admissions building, and also started on a game section where the user basically has to click on components of an inaccessible bathroom to "build" their own better bathroom and learn about the requirements of an accessible bathroom. 
+
+
+
+
+
+Bibliography
+Terry, Gareth, et al. “‘That Says, For Me, You Are a Second-Class Citizen’: A Concept Analysis of Accessibility.” The International Journal of Disability and Social Justice, vol. 5, no. 1, 2025, pp. 4–28. JSTOR, https://www.jstor.org/stable/48828309. Accessed 10 Dec. 2025.
+
+United Nations. Convention on the Rights of Persons with Disabilities. OHCHR, 13 Dec. 2006, https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-rights-persons-disabilities.
+
+Davis, Alexander k. “The Hidden Privilege in ‘Potty Politics.’” Contexts, vol. 16, no. 3, 2017, pp. 34–41. JSTOR, https://www.jstor.org/stable/26370535. Accessed 10 Dec. 2025.
