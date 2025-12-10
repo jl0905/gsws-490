@@ -63,10 +63,23 @@ const BathroomBuilder = () => {
   const [isShaking, setIsShaking] = useState(false);
   const [isGameActive, setIsGameActive] = useState(false);
 
-  const handleVideoClick = (e) => {
-    e.preventDefault();
+  const [lastClicked, setLastClicked] = useState(null);
 
-    if (!isGameActive) {
+  const handleDoorClick = (e) => {
+    e.preventDefault();
+    const clickedText = e.currentTarget.innerText.trim();
+
+    console.log(clickedText);
+    console.log(lastClicked);
+
+    if (isGameActive && clickedText !== lastClicked) {
+      setDoorClicks(0);
+      setIsGameActive(false);
+      setIsShaking(false);
+    }
+
+    if (!isGameActive || clickedText !== lastClicked) {
+      setLastClicked(clickedText);
       const clicksNeeded = Math.floor(Math.random() * 5) + 1;
       setRequiredClicks(clicksNeeded);
       setDoorClicks(0);
@@ -75,18 +88,28 @@ const BathroomBuilder = () => {
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
     } else {
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 500);
-
-      const newClicks = doorClicks + 1;
-      setDoorClicks(newClicks);
-
-      if (newClicks >= requiredClicks) {
-        setIsGameActive(false);
-        setIsShaking(false);
-        navigate('/video');
+        // Continue existing game
+        // Trigger shake animation
+        setIsShaking(true);
+        setTimeout(() => setIsShaking(false), 500);
+        
+        // Increment clicks
+        const newClicks = doorClicks + 1;
+        setDoorClicks(newClicks);
+        
+        if (newClicks >= requiredClicks) {
+          // Game complete, navigate based on what was clicked
+          setIsGameActive(false);
+          setIsShaking(false);
+          
+          // Navigate to appropriate page based on clicked element
+          if (clickedText.includes('Video')) {
+            navigate('/video');
+          } else if (clickedText.includes('Map')) {
+            navigate('/');
+          }
+        }
       }
-    }
   };
 
   // Game state - track which elements have been transformed
@@ -147,8 +170,9 @@ const BathroomBuilder = () => {
             <Link 
               to="/"
               className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+              onClick={handleDoorClick}
             >
-              Map
+              Map<span className={isShaking ? 'door-shake' : ''}>🚪</span>
             </Link>
 
 
@@ -156,7 +180,7 @@ const BathroomBuilder = () => {
             <Link 
               to="/video"
               className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
-              onClick={handleVideoClick}
+              onClick={handleDoorClick}
             >
               Video<span className={isShaking ? 'door-shake' : ''}>🚪</span>
             </Link>
@@ -165,7 +189,7 @@ const BathroomBuilder = () => {
               to="/game"
               className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
             >
-              Game
+              Game🔓
             </Link>
 
             {isGameActive && (

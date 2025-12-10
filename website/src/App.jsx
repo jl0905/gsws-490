@@ -1,8 +1,9 @@
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import VideoPage from './VideoPage';
 import BathroomBuilder from './BathroomBuilder';
+
 
 // Helper function to get the initial theme
 const getInitialTheme = () => {
@@ -226,46 +227,64 @@ function AppContent() {
   };
 
   const handleMarkerClick = (location) => {
-    setSelectedLocation(location);
+    setSelectedLocation(location);
   };
 
-  const handleVideoClick = (e) => {
-    e.preventDefault();
-    
-    if (!isGameActive) {
-      // Start the shaking game
-      const clicksNeeded = Math.floor(Math.random() * 5) + 1; // 1-5 clicks
-      setRequiredClicks(clicksNeeded);
-      setDoorClicks(0);
-      setIsGameActive(true);
-      
-      // Trigger shake animation on first click too
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 500);
-    } else {
-      // Trigger shake animation
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 500);
-      
-      // Increment clicks
-      const newClicks = doorClicks + 1;
-      setDoorClicks(newClicks);
-      
-      if (newClicks >= requiredClicks) {
-        // Game complete, navigate to video
-        setIsGameActive(false);
-        setIsShaking(false);
-        navigate('/video');
-      }
-    }
-  };
+const [lastClicked, setLastClicked] = useState(null);
+
+const handleDoorClick = (e) => {
+  e.preventDefault();
+  const clickedText = e.currentTarget.innerText.trim();
+
+  console.log(clickedText);
+  console.log(lastClicked);
+
+  if (isGameActive && clickedText !== lastClicked) {
+    setDoorClicks(0);
+    setIsGameActive(false);
+    setIsShaking(false);
+  }
+
+  if (!isGameActive || clickedText !== lastClicked) {
+    setLastClicked(clickedText);
+    const clicksNeeded = Math.floor(Math.random() * 5) + 1;
+    setRequiredClicks(clicksNeeded);
+    setDoorClicks(0);
+    setIsGameActive(true);
+
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 500);
+  } else {
+      // Continue existing game
+      // Trigger shake animation
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+      
+      // Increment clicks
+      const newClicks = doorClicks + 1;
+      setDoorClicks(newClicks);
+      
+      if (newClicks >= requiredClicks) {
+        // Game complete, navigate based on what was clicked
+        setIsGameActive(false);
+        setIsShaking(false);
+        
+        // Navigate to appropriate page based on clicked element
+        if (clickedText.includes('Video')) {
+          navigate('/video');
+        } else if (clickedText.includes('Game')) {
+          navigate('/game');
+        }
+      }
+    }
+};
 
   // Reset game state when component mounts (when returning from video page)
   useEffect(() => {
-    setIsShaking(false);
-    setIsGameActive(false);
-    setDoorClicks(0);
-    setRequiredClicks(0);
+    setIsShaking(false);
+    setIsGameActive(false);
+    setDoorClicks(0);
+    setRequiredClicks(0);
     // Note: The theme logic already sets mapKey when isDarkMode changes, 
     // but we can enforce a reset on component mount here if needed, or rely on the theme effect.
     // setMapKey(prev => prev + 1); 
@@ -338,7 +357,7 @@ function AppContent() {
               to="/"
               className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
             >
-              Map
+              Map🔓
             </Link>
             
 
@@ -346,7 +365,7 @@ function AppContent() {
             <Link 
               to="/video"
               className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
-              onClick={handleVideoClick}
+              onClick={handleDoorClick}
             >
               Video<span className={isShaking ? 'door-shake' : ''}>🚪</span>
             </Link>
@@ -354,8 +373,9 @@ function AppContent() {
             <Link 
               to="/game"
               className="text-white hover:text-gray-200 transition-colors text-lg font-medium"
+              onClick={handleDoorClick}
             >
-              Game
+              Game<span className={isShaking ? 'door-shake' : ''}>🚪</span>
             </Link>
             {isGameActive && (
               <div className="absolute top-full mt-2 right-0 bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-100 px-3 py-1 rounded-md shadow-lg text-sm whitespace-nowrap z-10">
@@ -539,8 +559,8 @@ function AppContent() {
           </div>
         </div>
       </footer>
-    </div>
-  );
+      </div>
+      );
 }
 
 // Main App component with router setup
@@ -555,5 +575,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;
