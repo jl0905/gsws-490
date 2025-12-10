@@ -224,21 +224,20 @@ const BathroomBuilder = () => {
           {/* Game Title and Instructions */}
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg p-6 mb-6 transition-colors">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Accessible Bathroom Builder
+              Build a Gender-neutral/Accessible Bathroom!
             </h1>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Transform this inaccessible bathroom into an accessible space! Click on each element to learn about accessibility requirements and make the bathroom usable for everyone.
+              Transform this bathroom into an accessible space! Click on each element to learn about accessibility requirements and make the bathroom usable and safe for everyone.
             </p>
             
             {/* Progress Bar */}
             <div className="mb-4">
-              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-                <span>Progress: {completedTasks}/{totalTasks} tasks completed</span>
-                <span>{completionPercentage}%</span>
+              <div className="flex justify-center text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <span>Progress: {completedTasks}/{totalTasks} tasks completed ({completionPercentage}%)</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div 
-                  className="bg-wm-green h-3 rounded-full transition-all duration-500"
+                  className="bg-[#115740] h-3 rounded-full transition-all duration-500"
                   style={{ width: `${completionPercentage}%` }}
                 />
               </div>
@@ -247,7 +246,7 @@ const BathroomBuilder = () => {
             {/* Reset Button */}
             <button
               onClick={resetGame}
-              className="bg-wm-green text-white px-4 py-2 rounded hover:bg-wm-green-dark transition-colors"
+              className="bg-[#115740] text-white px-4 py-2 rounded hover:bg-[#115740]-dark transition-colors"
             >
               Reset Game
             </button>
@@ -275,7 +274,7 @@ const BathroomBuilder = () => {
                   onClick={() => handleElementClick('cabinetsRemoved')}
                   className={`p-3 rounded-lg transition-all ${
                     gameState.cabinetsRemoved 
-                      ? 'bg-green-500 text-white' 
+                      ? 'bg-[#115740] text-white' 
                       : 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                   }`}
                   title="Click to remove cabinets"
@@ -289,7 +288,7 @@ const BathroomBuilder = () => {
                   onClick={() => handleElementClick('stallsUpgraded')}
                   className={`p-3 rounded-lg transition-all ${
                     gameState.stallsUpgraded 
-                      ? 'bg-green-500 text-white' 
+                      ? 'bg-[#115740] text-white' 
                       : 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                   }`}
                   title="Click to upgrade stalls"
@@ -303,7 +302,7 @@ const BathroomBuilder = () => {
                   onClick={() => handleElementClick('grabBarsAdded')}
                   className={`p-3 rounded-lg transition-all ${
                     gameState.grabBarsAdded 
-                      ? 'bg-green-500 text-white' 
+                      ? 'bg-[#115740] text-white' 
                       : 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                   }`}
                   title="Click to add grab bars"
@@ -317,7 +316,7 @@ const BathroomBuilder = () => {
                   onClick={() => handleElementClick('soapDispenserAdded')}
                   className={`p-3 rounded-lg transition-all ${
                     gameState.soapDispenserAdded 
-                      ? 'bg-green-500 text-white' 
+                      ? 'bg-[#115740] text-white' 
                       : 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                   }`}
                   title="Click to add soap dispenser"
@@ -331,7 +330,7 @@ const BathroomBuilder = () => {
                   onClick={() => handleElementClick('changingStationAdded')}
                   className={`p-3 rounded-lg transition-all ${
                     gameState.changingStationAdded 
-                      ? 'bg-green-500 text-white' 
+                      ? 'bg-[#115740] text-white' 
                       : 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                   }`}
                   title="Click to add changing station"
@@ -345,7 +344,7 @@ const BathroomBuilder = () => {
                   onClick={() => handleElementClick('emergencyButtonAdded')}
                   className={`p-3 rounded-lg transition-all ${
                     gameState.emergencyButtonAdded 
-                      ? 'bg-green-500 text-white' 
+                      ? 'bg-[#115740] text-white' 
                       : 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                   }`}
                   title="Click to add emergency button"
